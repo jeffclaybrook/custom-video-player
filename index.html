@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <style>
+        @font-face {
+            font-family: Slack v2;
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://a.slack-edge.com/bv1-10/slack-icons-v2-fe043a5.woff2) format('woff2');
+        }
+
+        .c-icon {
+            align-items: center;
+            display: inline-flex;
+            height: 20px;
+            justify-content: center;
+            position: relative;
+            width: 20px
+        }
+
+        .c-icon:before {
+            display: inline-block;
+            font-family: Slack v2;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1
+        }
+
+        .c-icon--cc:before {
+            content: "\E5B2"
+        }
+
+        .c-icon--cc-filled:before {
+            content: "\E5B1"
+        }
+
+        .c-icon--chevron-down:before {
+            content: "\E252"
+        }
+
+        .c-icon--chevron-up:before {
+            content: "\E253"
+        }
+
+        .c-icon--full-screen:before {
+            content: "\E5B3"
+        }
+
+        .c-icon--minimize:before {
+            content: "\E5B4";
+        }
+
+        .c-icon--new-window:before {
+            content: "\E153"
+        }
+
+        .c-icon--pause:before {
+            content: "\E132"
+        }
+
+        .c-icon--pause-bold:before {
+            content: "\EA32"
+        }
+
+        .c-icon--play:before {
+            content: "\E134"
+        }
+
+        .c-icon--play-filled:before {
+            content: "\E539"
+        }
+
+        .c-icon--times:before {
+            content: "\E278"
+        }
+
+        .c-icon--times-circle:before {
+            content: "\E214"
+        }
+
+        .c-icon--times-circle-medium:before {
+            content: "\E229"
+        }
+
+        .c-icon--times-small:before {
+            content: "\E294"
+        }
+
+        .c-icon--times-medium:before {
+            content: "\E321"
+        }
+
+        .c-icon--times-large:before {
+            content: "\E328"
+        }
+
+        .c-icon--times-circle-small-filled:before,
+        .c-icon--times-circle-small:before {
+            content: "\E520"
+        }
+
+        .c-icon--volume-off:before {
+            content: "\E051"
+        }
+
+        .c-icon--volume-down:before {
+            content: "\E052"
+        }
+
+        .c-icon--volume-medium:before {
+            content: "\E053"
+        }
+
+        .c-icon--volume-up:before {
+            content: "\E054"
+        }
+
+        .c-icon--volume-off-alt:before {
+            content: "\E055"
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container visible">
+        <div class="wrapper">
+            <div class="header">
+                <div class="header-gradient"></div>
+                <div class="card">
+                    <img src="images/avatar.png" alt="Avatar">
+                    <div class="card-info">
+                        <h3>jclaybrook</h3>
+                        <p>Custom_Video_Player_by_Jeffrey_Claybrook_2022.mp4</p>
+                    </div>
+                </div>
+                <div class="tooltip">
+                    <button class="icon-btn" id="close-btn" aria-label="Close"><i class="c-icon c-icon--times"></i></button>
+                    <span role="tooltip" aria-hidden="true">Close</span>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footer-gradient"></div>
+                <div class="progress">
+                    <div class="track">
+                        <span id="tooltip" role="tooltip" aria-hidden="true">00:00</span>
+                        <div class="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <div class="column">
+                        <div class="tooltip">
+                            <button class="icon-btn" id="play-btn" aria-label="Play"><i class="c-icon c-icon--play"></i></button>
+                            <span role="tooltip" aria-hidden="true">Play</span>
+                        </div>
+                        <div class="volume-wrapper">
+                            <button class="icon-btn" id="volume-btn" aria-label="Volume"><i class="c-icon c-icon--volume-up"></i></button>
+                            <label>
+                                <input type="range" id="volume-slider" min="0" max="1" value="1" step="0.1">
+                            </label>
+                        </div>
+                        <div class="timecodes">
+                            <p id="current-time">00:00</p>
+                            <span> / </span>
+                            <p id="duration-time">00:00</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="menu-wrapper">
+                            <button class="menu-btn" id="speed-btn" aria-label="Playback speed"><span id="current-speed">1x</span><i class="c-icon c-icon--chevron-down"></i></button>
+                            <ul class="speed-options" id="speed-options">
+                                <li data-speed="1.5">1.5x</li>
+                                <li data-speed="1.25">1.25x</li>
+                                <li data-speed="1" class="selected">1x</li>
+                                <li data-speed="0.75">0.75x</li>
+                                <li data-speed="0.5">0.5x</li>
+                            </ul>
+                        </div>
+                        <div class="tooltip">
+                            <button class="icon-btn" id="subtitles-btn" aria-label="Subtitles"><i class="c-icon c-icon--cc"></i></button>
+                            <span role="tooltip" aria-hidden="true">Subtitles</span>
+                        </div>
+                        <div class="tooltip">
+                            <button class="icon-btn" id="pip-btn" aria-label="Picture in picture"><i class="c-icon c-icon--new-window"></i></button>
+                            <span role="tooltip" aria-hidden="true">Picture in picture</span>
+                        </div>
+                        <div class="tooltip">
+                            <button class="icon-btn" id="fullscreen-btn" aria-label="Fullscreen"><i class="c-icon c-icon--full-screen"></i></button>
+                            <span role="tooltip" aria-hidden="true">Fullscreen</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <video poster="images/poster.png" preload="metadata">
+            <source src="https://unprocessed.arenaedge.com/videos-l8xorbrl.unprocessed.mp4" type="video/mp4">
+            <!-- <track src="captions.vtt" label="Captions" kind="subtitles" srclang="en" default></track> -->
+        </video>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
